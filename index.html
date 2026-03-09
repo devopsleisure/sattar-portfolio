@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sattar Ahmed — Medical Billing & Revenue Cycle Expert</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@200;300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- EmailJS SDK — sends contact form directly to Gmail without any backend -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8D080; --gold-dim: #7A6130;
+  --navy: #080C18; --navy-mid: #0F1623; --navy-card: #131B2E;
+  --white: #F2EDE3; --muted: #8A8276; --accent: #4A8FC2; --green: #2ECC8A;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--navy)}::-webkit-scrollbar-thumb{background:var(--gold-dim)}
+
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.035) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;justify-content:space-between;align-items:center;padding:0 60px;height:70px;background:rgba(8,12,24,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,.12)}
+nav::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);opacity:.7}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:5px;color:var(--gold);text-transform:uppercase;text-decoration:none;flex-shrink:0}
+.nav-links{display:flex;gap:40px;list-style:none}
+.nav-links a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;position:relative;white-space:nowrap}
+.nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
+.nav-links a:hover{color:var(--gold)}.nav-links a:hover::after{width:100%}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:1001;background:none;border:none}
+.hamburger span{display:block;width:24px;height:2px;background:var(--gold);transition:all .3s ease;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.mobile-nav{display:none;position:fixed;top:70px;left:0;right:0;background:rgba(8,12,24,.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,.15);z-index:998;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease}
+.mobile-nav.open{max-height:400px;padding:20px 0 30px}
+.mobile-nav ul{list-style:none;display:flex;flex-direction:column}
+.mobile-nav ul li a{display:block;padding:14px 32px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.06);transition:color .3s,background .3s}
+.mobile-nav ul li a:hover{color:var(--gold);background:rgba(201,168,76,.04)}
+
+.page{position:relative;z-index:1}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:100px 60px 80px;position:relative;overflow:hidden}
+.orb1{position:absolute;top:-150px;right:-150px;width:700px;height:700px;background:radial-gradient(circle,rgba(201,168,76,.09) 0%,transparent 65%);pointer-events:none}
+.orb2{position:absolute;bottom:-100px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(74,143,194,.07) 0%,transparent 65%);pointer-events:none}
+.hero-wm{position:absolute;bottom:30px;right:-10px;font-family:'Cormorant Garamond',serif;font-size:clamp(40px,9vw,140px);font-weight:700;color:rgba(201,168,76,.04);letter-spacing:14px;text-transform:uppercase;pointer-events:none;white-space:nowrap;user-select:none}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center;position:relative;z-index:2}
+.eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:blink 2.2s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+.eyebrow-pill{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:5px 14px;background:rgba(201,168,76,.06)}
+.hero-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:14px}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,108px);font-weight:300;line-height:.9;letter-spacing:-2px}
+.hero-name .fn{color:var(--white);display:block}.hero-name .ln{color:var(--gold);font-style:italic;display:block}
+.name-rule{width:90px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:22px 0}
+.hero-role{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+.hero-bio{font-size:15px;line-height:1.85;color:var(--muted);max-width:500px;margin-bottom:38px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-gold{padding:14px 34px;background:var(--gold);color:var(--navy);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:all .3s;display:inline-block;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-3px);box-shadow:0 16px 40px rgba(201,168,76,.3)}
+.btn-outline{padding:14px 34px;background:transparent;color:var(--white);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(255,255,255,.15);transition:all .3s;display:inline-block;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px)}
+.hero-card{background:rgba(255,255,255,.018);border:1px solid rgba(201,168,76,.18);padding:44px 38px;position:relative}
+.hero-card::before{content:'';position:absolute;top:-1px;left:40px;right:40px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.card-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:28px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
+.stat-box{padding:18px 16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);transition:border-color .3s}
+.stat-box:hover{border-color:rgba(201,168,76,.3)}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;color:var(--gold);line-height:1}
+.stat-l{font-size:11px;color:var(--muted);margin-top:5px}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 14px;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.28);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
+
+/* SECTIONS */
+.sec{padding:110px 60px;position:relative;z-index:1}
+.sec-alt{background:var(--navy-mid)}.sec-dk{background:var(--navy-card)}
+.sec-inner{max-width:1200px;margin:0 auto}
+.sec-tag{display:flex;align-items:center;gap:14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.sec-tag::before{content:'';display:block;width:36px;height:1px;background:var(--gold);flex-shrink:0}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,58px);font-weight:300;line-height:1.05;margin-bottom:64px}
+.sec-title em{color:var(--gold);font-style:italic}
+.gold-rule{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);position:relative;z-index:1}
+
+/* EXPERTISE */
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(201,168,76,.08)}
+.exp-card{background:var(--navy-mid);padding:44px 34px;position:relative;overflow:hidden;transition:background .35s}
+.exp-card:hover{background:rgba(201,168,76,.04)}
+.exp-num{position:absolute;top:20px;right:24px;font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;color:rgba(201,168,76,.04);line-height:1;pointer-events:none}
+.exp-icon{width:44px;height:44px;color:var(--gold);margin-bottom:22px;opacity:.85}
+.exp-h{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:12px}
+.exp-p{font-size:13.5px;color:var(--muted);line-height:1.75}
+
+/* SKILLS */
+.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px}
+.skill-grp{margin-bottom:38px}
+.skill-grp-title{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(201,168,76,.15);padding-bottom:12px;margin-bottom:20px}
+.skill-row{margin-bottom:15px}
+.skill-meta{display:flex;justify-content:space-between;margin-bottom:7px}
+.skill-name{font-size:13px;color:var(--white)}.skill-pct{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold)}
+.bar-track{height:2px;background:rgba(255,255,255,.06);overflow:hidden;border-radius:2px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));width:0;transition:width 1.6s cubic-bezier(.16,1,.3,1)}
+.tag-sec{margin-bottom:34px}
+.tag-title{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:9px}
+.tag{padding:8px 16px;border:1px solid rgba(255,255,255,.08);font-size:12px;color:var(--muted);transition:all .3s;cursor:default}
+.tag:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.05)}
+
+/* SPECIALTIES */
+.spec-row{display:flex;gap:24px;flex-wrap:wrap}
+.spec-card{flex:1;min-width:220px;padding:44px 28px;background:rgba(255,255,255,.018);border:1px solid rgba(201,168,76,.14);text-align:center;transition:all .35s;position:relative;overflow:hidden}
+.spec-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
+.spec-card:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.spec-card:hover::after{transform:scaleX(1)}
+.spec-icon{font-size:36px;display:block;margin-bottom:18px}
+.spec-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:12px}
+.spec-desc{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:44px}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(180deg,var(--gold) 0%,rgba(201,168,76,.08) 100%)}
+.tl-item{position:relative;margin-bottom:60px;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.04)}
+.tl-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.tl-dot{position:absolute;left:-50px;top:5px;width:13px;height:13px;background:var(--gold);border-radius:50%;border:2px solid var(--navy-mid);box-shadow:0 0 0 4px rgba(201,168,76,.18)}
+.tl-date{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
+.tl-role{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,4vw,28px);font-weight:600;margin-bottom:6px}
+.tl-company{font-size:13px;color:var(--accent);letter-spacing:.5px;margin-bottom:18px}
+.tl-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.tl-list li{font-size:14px;color:var(--muted);line-height:1.65;padding-left:20px;position:relative}
+.tl-list li::before{content:'▸';position:absolute;left:0;top:2px;color:var(--gold);font-size:10px}
+
+/* CERTS */
+.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.cert-card{padding:38px 28px;background:rgba(255,255,255,.014);border:1px solid rgba(201,168,76,.14);position:relative;overflow:hidden;transition:all .35s}
+.cert-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.04) 0%,transparent 60%);opacity:0;transition:opacity .35s}
+.cert-card:hover{border-color:rgba(201,168,76,.38);transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.cert-card:hover::before{opacity:1}
+.cert-ico{width:48px;height:48px;background:rgba(201,168,76,.09);border:1px solid rgba(201,168,76,.22);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+.cert-h{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:10px}
+.cert-p{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* CONTACT */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.contact-hl{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;line-height:1.2;margin-bottom:20px}
+.contact-hl em{color:var(--gold);font-style:italic}
+.contact-sub{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:40px}
+.c-list{display:flex;flex-direction:column;gap:18px}
+.c-row{display:flex;align-items:center;gap:16px}
+.c-ico{width:44px;height:44px;flex-shrink:0;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:17px}
+.c-lbl{font-size:10px;font-family:'Space Mono',monospace;color:var(--gold-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.c-val{font-size:14.5px;color:var(--white)}
+.c-val a{color:var(--white);text-decoration:none;transition:color .3s}
+.c-val a:hover{color:var(--gold)}
+.contact-form{display:flex;flex-direction:column;gap:14px}
+.f-in,.f-ta{width:100%;background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.08);color:var(--white);font-family:'Jost',sans-serif;font-size:14px;font-weight:300;padding:15px 20px;outline:none;transition:border-color .3s,background .3s;-webkit-appearance:none;border-radius:0}
+.f-in:focus,.f-ta:focus{border-color:rgba(201,168,76,.45);background:rgba(201,168,76,.03)}
+.f-in::placeholder,.f-ta::placeholder{color:rgba(138,130,118,.7);font-size:13px}
+.f-ta{resize:vertical;min-height:120px}
+.btn-sub{width:100%;padding:16px;background:var(--gold);color:var(--navy);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:all .3s;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.btn-sub:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 30px rgba(201,168,76,.28)}
+.btn-sub:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Toast notification */
+.toast{position:fixed;bottom:32px;right:32px;z-index:9999;padding:16px 28px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;border-radius:2px;transform:translateY(20px);opacity:0;transition:all .4s ease;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--green);color:#0a1a12}
+.toast.error{background:#e05c5c;color:#fff}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.1);padding:38px 60px;position:relative;z-index:1}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.footer-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);letter-spacing:2px}
+.footer-copy{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--gold-dim);text-align:right;line-height:1.8}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+
+/* TABLET */
+@media(max-width:960px){
+  nav{padding:0 24px}.nav-links{display:none}
+  .hamburger{display:flex}.mobile-nav{display:block}
+  .sec,#hero{padding:80px 24px}#hero{padding-top:100px}
+  .hero-inner{grid-template-columns:1fr;gap:50px}.hero-wm{display:none}
+  .exp-grid{grid-template-columns:1fr 1fr}.skills-layout{grid-template-columns:1fr;gap:40px}
+  .cert-grid{grid-template-columns:1fr 1fr}.contact-layout{grid-template-columns:1fr;gap:50px}
+  .spec-row{flex-direction:column}
+  footer{padding:30px 24px}.footer-inner{flex-direction:column;gap:14px;text-align:center}.footer-copy{text-align:center}
+}
+/* MOBILE */
+@media(max-width:600px){
+  nav{padding:0 20px}.nav-brand{font-size:14px;letter-spacing:3px}
+  #hero{padding:90px 20px 60px}.hero-name{font-size:clamp(44px,13vw,68px)}
+  .hero-bio{font-size:14px}.hero-card{padding:28px 20px}
+  .hero-btns{gap:10px}.btn-gold,.btn-outline{padding:12px 22px;font-size:8px}
+  .sec{padding:60px 20px}.sec-title{margin-bottom:40px}
+  .exp-grid{grid-template-columns:1fr}.exp-card{padding:32px 24px}
+  .cert-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}.stat-n{font-size:32px}
+  .skill-name{font-size:12px}.spec-card{padding:30px 20px;min-width:unset}
+  .timeline{padding-left:30px}.tl-dot{left:-36px}
+  .contact-layout{gap:40px}.contact-form{gap:12px}
+  .f-in,.f-ta{padding:13px 16px;font-size:13px}
+  footer{padding:24px 20px}.footer-name{font-size:18px}
+  .tag{padding:6px 12px;font-size:11px}
+  .toast{bottom:16px;right:16px;left:16px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<nav>
+  <a href="#hero" class="nav-brand">Sattar Ahmed</a>
+  <ul class="nav-links">
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#specializations">Specialties</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <ul>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#specializations">Specialties</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div>
+
+<div class="page">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb1"></div><div class="orb2"></div>
+  <div class="hero-wm">SATTAR AHMED</div>
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">
+        <span class="live-dot"></span>
+        <span class="eyebrow-pill">Available for Opportunities</span>
+      </div>
+      <p class="hero-sub">&#8212; Medical Billing Professional &#8212;</p>
+      <h1 class="hero-name"><span class="fn">Sattar</span><span class="ln">Ahmed</span></h1>
+      <div class="name-rule"></div>
+      <p class="hero-role">Medical Billing &amp; Revenue Cycle Specialist</p>
+      <p class="hero-bio">A results-driven healthcare revenue cycle professional with deep expertise across the entire AR spectrum &#8212; from charge capture and claims submission to denial management, appeals, and collections. Dedicated to maximizing reimbursements and reducing revenue leakage.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-gold">Get In Touch</a>
+        <a href="#experience" class="btn-outline">View Experience</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <p class="card-lbl">// Career Snapshot</p>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-n">4+</div><div class="stat-l">Years of Experience</div></div>
+        <div class="stat-box"><div class="stat-n">98%</div><div class="stat-l">Clean Claim Rate</div></div>
+        <div class="stat-box"><div class="stat-n">3</div><div class="stat-l">Core Specialties</div></div>
+        <div class="stat-box"><div class="stat-n">$2M+</div><div class="stat-l">AR Recovered</div></div>
+      </div>
+      <div class="chip-row">
+        <span class="chip">ICD-10</span><span class="chip">CPT Expert</span>
+        <span class="chip">HCPCS</span><span class="chip">AR Specialist</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- EXPERTISE -->
+<section id="expertise" class="sec sec-alt">
+  <div class="sec-inner">
+    <p class="sec-tag rv">Core Competencies</p>
+    <h2 class="sec-title rv">Medical Billing &amp; AR <em>Expertise</em></h2>
+    <div class="exp-grid">
+      <div class="exp-card rv"><span class="exp-num">01</span><svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><h3 class="exp-h">Medical Coding</h3><p class="exp-p">Expert-level proficiency in CPT, ICD-10-CM, and HCPCS Level II coding across multiple specialties. Ensuring accuracy, compliance, and maximum reimbursement on every claim.</p></div>
+      <div class="exp-card rv"><span class="exp-num">02</span><svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><h3 class="exp-h">AR Management</h3><p class="exp-p">Full-cycle Accounts Receivable management &#8212; from claim submission and tracking to aging analysis, payer follow-up, and revenue reconciliation to minimize days in AR.</p></div>
+      <div class="exp-card rv"><span class="exp-num">03</span><svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg><h3 class="exp-h">Denial Management</h3><p class="exp-p">Strategic denial analysis, root-cause investigation, and timely appeals. Implemented denial prevention protocols that achieved industry-leading clean claim ratios for multiple practices.</p></div>
+      <div class="exp-card rv"><span class="exp-num">04</span><svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><h3 class="exp-h">Patient Billing</h3><p class="exp-p">Comprehensive patient statement management, payment plan coordination, and collections. A patient-first approach that improves collection rates while maintaining positive relationships.</p></div>
+      <div class="exp-card rv"><span class="exp-num">05</span><svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg><h3 class="exp-h">Revenue Cycle Analytics</h3><p class="exp-p">KPI dashboards, payer mix analysis, and financial reporting. Translating complex billing data into actionable insights that drive practice profitability and efficiency.</p></div>
+      <div class="exp-card rv"><span class="exp-num">06</span><svg class="exp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg><h3 class="exp-h">Compliance &amp; Auditing</h3><p class="exp-p">HIPAA compliance, payer policy monitoring, and internal coding audits. Ensuring documentation integrity and regulatory adherence to protect practices from audit risk.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- SKILLS -->
+<section id="skills" class="sec">
+  <div class="sec-inner">
+    <p class="sec-tag rv">Technical Proficiency</p>
+    <h2 class="sec-title rv">Skills &amp; <em>Competencies</em></h2>
+    <div class="skills-layout">
+      <div>
+        <div class="skill-grp rv">
+          <p class="skill-grp-title">Billing &amp; Coding</p>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">CPT / ICD-10 / HCPCS Coding</span><span class="skill-pct">98%</span></div><div class="bar-track"><div class="bar-fill" data-w="98"></div></div></div>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">Claims Submission &amp; Tracking</span><span class="skill-pct">97%</span></div><div class="bar-track"><div class="bar-fill" data-w="97"></div></div></div>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">Denial Management &amp; Appeals</span><span class="skill-pct">95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">Prior Authorization</span><span class="skill-pct">93%</span></div><div class="bar-track"><div class="bar-fill" data-w="93"></div></div></div>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">EOB / ERA Analysis</span><span class="skill-pct">96%</span></div><div class="bar-track"><div class="bar-fill" data-w="96"></div></div></div>
+        </div>
+        <div class="skill-grp rv">
+          <p class="skill-grp-title">AR &amp; Revenue Cycle</p>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">AR Follow-up &amp; Aging Analysis</span><span class="skill-pct">97%</span></div><div class="bar-track"><div class="bar-fill" data-w="97"></div></div></div>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">Charge Capture &amp; Entry</span><span class="skill-pct">99%</span></div><div class="bar-track"><div class="bar-fill" data-w="99"></div></div></div>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">Payment Posting &amp; Reconciliation</span><span class="skill-pct">98%</span></div><div class="bar-track"><div class="bar-fill" data-w="98"></div></div></div>
+          <div class="skill-row"><div class="skill-meta"><span class="skill-name">Collections &amp; Patient Billing</span><span class="skill-pct">92%</span></div><div class="bar-track"><div class="bar-fill" data-w="92"></div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tag-sec rv">
+          <p class="tag-title">Software &amp; Platforms</p>
+          <div class="tag-cloud"><span class="tag">Kareo</span><span class="tag">AdvancedMD</span><span class="tag">Athenahealth</span><span class="tag">Office Ally</span><span class="tag">Change Healthcare</span><span class="tag">Availity</span><span class="tag">MS Excel</span></div>
+        </div>
+        <div class="tag-sec rv">
+          <p class="tag-title">Insurance Payers</p>
+          <div class="tag-cloud"><span class="tag">Medicare</span><span class="tag">Medicaid</span><span class="tag">Blue Cross Blue Shield</span><span class="tag">Aetna</span><span class="tag">Cigna</span><span class="tag">UnitedHealthcare</span><span class="tag">Humana</span><span class="tag">Tricare</span><span class="tag">Workers&#39; Comp</span><span class="tag">No-Fault / MVA</span></div>
+        </div>
+        <div class="tag-sec rv">
+          <p class="tag-title">Professional Skills</p>
+          <div class="tag-cloud"><span class="tag">Analytical Thinking</span><span class="tag">Detail-Oriented</span><span class="tag">Communication</span><span class="tag">Problem Solving</span><span class="tag">Team Leadership</span><span class="tag">Time Management</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- SPECIALTIES -->
+<section id="specializations" class="sec sec-dk">
+  <div class="sec-inner">
+    <p class="sec-tag rv">Medical Specialties</p>
+    <h2 class="sec-title rv">Specialty <em>Focus Areas</em></h2>
+    <div class="spec-row">
+      <div class="spec-card rv"><span class="spec-icon">&#129458;</span><h3 class="spec-name">Arthritis &amp; Rheumatology</h3><p class="spec-desc">Deep expertise in billing complex rheumatological conditions, infusion therapies, joint procedures, and chronic disease management coding.</p></div>
+      <div class="spec-card rv"><span class="spec-icon">&#129409;</span><h3 class="spec-name">Gastroenterology</h3><p class="spec-desc">Proficient in GI procedure coding including colonoscopy, endoscopy, and diagnostic services with accurate modifier application and payer guidelines.</p></div>
+      <div class="spec-card rv"><span class="spec-icon">&#129504;</span><h3 class="spec-name">Mental Health &amp; Behavioral</h3><p class="spec-desc">Skilled in behavioral health billing including therapy sessions, psychiatric evaluations, telehealth compliance, and parity law adherence.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="sec sec-alt">
+  <div class="sec-inner">
+    <p class="sec-tag rv">Work History</p>
+    <h2 class="sec-title rv">Professional <em>Experience</em></h2>
+    <div class="timeline">
+      <div class="tl-item rv">
+        <div class="tl-dot"></div>
+        <p class="tl-date">2021 &#8212; Present</p>
+        <h3 class="tl-role">Senior Medical Billing Specialist</h3>
+        <p class="tl-company">Regional Healthcare Network &middot; Full-Time</p>
+        <ul class="tl-list">
+          <li>Managed end-to-end revenue cycle for a multi-physician group with annual revenue exceeding $4M.</li>
+          <li>Reduced AR days from 52 to 28 through systematic follow-up workflows and denial root-cause analysis.</li>
+          <li>Achieved and maintained 98%+ clean claim rate by implementing pre-submission claim scrubbing protocols.</li>
+          <li>Led a team of billing staff, providing training, QA audits, and performance coaching.</li>
+          <li>Coordinated with payers including Medicare, Medicaid, BCBS, Aetna, and UHC for complex appeals.</li>
+          <li>Prepared monthly and quarterly AR reports and KPI dashboards for senior leadership.</li>
+        </ul>
+      </div>
+      <div class="tl-item rv">
+        <div class="tl-dot"></div>
+        <p class="tl-date">2021 &#8212; 2022</p>
+        <h3 class="tl-role">Medical Coder &amp; AR Analyst</h3>
+        <p class="tl-company">Integrated Billing Solutions &middot; Full-Time</p>
+        <ul class="tl-list">
+          <li>Coded and billed for multiple specialties using CPT, ICD-10-CM, and HCPCS Level II code sets.</li>
+          <li>Performed daily payment posting, ERA/EOB reconciliation, and patient account adjustments.</li>
+          <li>Managed denial queue, identifying trends and executing timely appeals with supporting documentation.</li>
+          <li>Verified insurance eligibility and benefits for all scheduled patients, reducing claim rejections by 30%.</li>
+          <li>Processed prior authorization requests and communicated outcomes to clinical staff promptly.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications" class="sec">
+  <div class="sec-inner">
+    <p class="sec-tag rv">Credentials</p>
+    <h2 class="sec-title rv">Certifications &amp; <em>Education</em></h2>
+    <div class="cert-grid">
+      <div class="cert-card rv"><div class="cert-ico">&#128203;</div><h3 class="cert-h">ICD-10-CM Proficiency</h3><p class="cert-p">Advanced proficiency in ICD-10 diagnosis coding including complex multi-system conditions, injury coding with external cause codes, and HCC coding.</p></div>
+      <div class="cert-card rv"><div class="cert-ico">&#128272;</div><h3 class="cert-h">HIPAA Compliance Certification</h3><p class="cert-p">Trained and certified in HIPAA privacy and security rules governing the handling of Protected Health Information (PHI) in billing and administrative settings.</p></div>
+      <div class="cert-card rv"><div class="cert-ico">&#127891;</div><h3 class="cert-h">Health Information Management</h3><p class="cert-p">Comprehensive academic foundation in healthcare data management, medical terminology, anatomy, coding theory, and healthcare administration.</p></div>
+      <div class="cert-card rv"><div class="cert-ico">&#128138;</div><h3 class="cert-h">Revenue Cycle Management</h3><p class="cert-p">Specialized training in full-cycle RCM including patient access, charge capture, claims management, payment posting, AR management, and financial reporting.</p></div>
+      <div class="cert-card rv"><div class="cert-ico">&#128202;</div><h3 class="cert-h">Medical Billing Analytics</h3><p class="cert-p">Skilled in generating AR aging reports, denial trend dashboards, payer performance analysis, and collection rate benchmarking using industry-standard platforms.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="sec sec-alt">
+  <div class="sec-inner">
+    <p class="sec-tag rv">Let&#39;s Connect</p>
+    <div class="contact-layout">
+      <div>
+        <h2 class="contact-hl rv">Ready to Optimize Your <em>Revenue Cycle?</em></h2>
+        <p class="contact-sub rv">Whether you&#39;re looking to reduce AR days, recover denied claims, or build a high-performing billing operation &#8212; I bring the expertise and track record to deliver real results.</p>
+        <div class="c-list">
+          <div class="c-row rv">
+            <div class="c-ico">&#128231;</div>
+            <div>
+              <div class="c-lbl">Email</div>
+              <div class="c-val"><a href="mailto:sattarahmedofficial1&#64;gmail.com">sattarahmedofficial1&#64;gmail.com</a></div>
+            </div>
+          </div>
+          <div class="c-row rv">
+            <div class="c-ico">&#128241;</div>
+            <div>
+              <div class="c-lbl">Phone</div>
+              <div class="c-val"><a href="tel:+923215063059">0321-5063-059</a></div>
+            </div>
+          </div>
+          <div class="c-row rv">
+            <div class="c-ico">&#128205;</div>
+            <div>
+              <div class="c-lbl">Location</div>
+              <div class="c-val">Pakistan &middot; Remote Available</div>
+            </div>
+          </div>
+          <div class="c-row rv">
+            <div class="c-ico">&#128279;</div>
+            <div>
+              <div class="c-lbl">LinkedIn</div>
+              <div class="c-val"><a href="https://www.linkedin.com/in/sattar-ahmed-88286438a" target="_blank" rel="noopener noreferrer">linkedin.com/in/sattar-ahmed</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form rv" id="contactForm" novalidate>
+        <input type="text"  id="f_name"    class="f-in" placeholder="Your Full Name"             autocomplete="name"  required>
+        <input type="email" id="f_email"   class="f-in" placeholder="Your Email Address"          autocomplete="email" required>
+        <input type="text"  id="f_subject" class="f-in" placeholder="Subject / Opportunity Type"  required>
+        <textarea           id="f_message" class="f-ta" placeholder="Your message..."              required></textarea>
+        <button type="submit" class="btn-sub" id="sendBtn">Send Message</button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-name">Sattar Ahmed</div>
+    <div class="footer-copy">Medical Billing &amp; Revenue Cycle Expert<br>&#169; 2025 Sattar Ahmed. All rights reserved.</div>
+  </div>
+</footer>
+</div>
+
+<script>
+// ============================================================
+//  EMAILJS CONFIGURATION
+//  Steps to activate (free at emailjs.com):
+//  1. Sign up at https://www.emailjs.com
+//  2. Add Email Service → connect your Gmail → copy Service ID
+//  3. Create Email Template → copy Template ID
+//  4. Go to Account → copy Public Key
+//  5. Paste the three values below and you're done
+// ============================================================
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // e.g. 'xK2dP9mN...'
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // e.g. 'service_abc123'
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // e.g. 'template_xyz789'
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+// ── Hamburger ──
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+hamburger.addEventListener('click', () => {
+  const open = mobileNav.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', String(open));
+});
+mobileNav.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  });
+});
+document.addEventListener('click', e => {
+  if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+});
+
+// ── Scroll reveal ──
+const rvObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('on'), i * 55);
+      rvObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+// ── Skill bars ──
+const barObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.width = e.target.dataset.w + '%';
+      barObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.bar-fill').forEach(b => barObs.observe(b));
+
+// ── Toast helper ──
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => { t.className = 'toast'; }, 4000);
+}
+
+// ── Contact form with EmailJS ──
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name    = document.getElementById('f_name').value.trim();
+  const email   = document.getElementById('f_email').value.trim();
+  const subject = document.getElementById('f_subject').value.trim();
+  const message = document.getElementById('f_message').value.trim();
+  const btn     = document.getElementById('sendBtn');
+
+  if (!name || !email || !subject || !message) {
+    showToast('Please fill in all fields.', 'error'); return;
+  }
+  const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRx.test(email)) {
+    showToast('Please enter a valid email address.', 'error'); return;
+  }
+
+  // If EmailJS keys are not set yet, fall back to mailto
+  if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+    const body = encodeURIComponent(
+      'Name: ' + name + '\nEmail: ' + email + '\n\n' + message
+    );
+    window.location.href = 'mailto:sattarahmedofficial1@gmail.com'
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + body;
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      from_name:    name,
+      from_email:   email,
+      subject:      subject,
+      message:      message,
+      to_email:     'sattarahmedofficial1@gmail.com'
+    });
+    showToast('Message sent successfully!', 'success');
+    this.reset();
+    btn.textContent = 'Message Sent';
+    setTimeout(() => { btn.textContent = 'Send Message'; btn.disabled = false; }, 3000);
+  } catch (err) {
+    showToast('Failed to send. Please email directly.', 'error');
+    btn.textContent = 'Send Message';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
