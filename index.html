@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Portfolio of Sattar Ahmed, a medical billing and revenue cycle specialist focused on claims quality, denial management, and AR optimization.">
 <title>Sattar Ahmed — Medical Billing & Revenue Cycle Expert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@200;300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- EmailJS SDK — sends contact form directly to Gmail without any backend -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -28,6 +31,8 @@ nav::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;backgrou
 .nav-links a{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;position:relative;white-space:nowrap}
 .nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
 .nav-links a:hover{color:var(--gold)}.nav-links a:hover::after{width:100%}
+.nav-links a.active{color:var(--gold)}
+.nav-links a.active::after{width:100%}
 
 /* Hamburger */
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:1001;background:none;border:none}
@@ -170,6 +175,10 @@ nav::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;backgrou
 .toast.success{background:var(--green);color:#0a1a12}
 .toast.error{background:#e05c5c;color:#fff}
 
+.to-top{position:fixed;right:22px;bottom:22px;z-index:900;width:44px;height:44px;border:1px solid rgba(201,168,76,.4);background:rgba(8,12,24,.85);color:var(--gold);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(15px);pointer-events:none;transition:all .3s}
+.to-top.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.to-top:hover{background:rgba(201,168,76,.12);border-color:var(--gold-light)}
+
 /* FOOTER */
 footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.1);padding:38px 60px;position:relative;z-index:1}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px}
@@ -208,6 +217,11 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.1);padding:3
   footer{padding:24px 20px}.footer-name{font-size:18px}
   .tag{padding:6px 12px;font-size:11px}
   .toast{bottom:16px;right:16px;left:16px;text-align:center}
+  .to-top{right:16px;bottom:16px}
+}
+
+@media(prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
 }
 </style>
 </head>
@@ -217,16 +231,17 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.1);padding:3
 
 <!-- Toast notification -->
 <div class="toast" id="toast"></div>
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
 
 <nav>
   <a href="#hero" class="nav-brand">Sattar Ahmed</a>
-  <ul class="nav-links">
-    <li><a href="#expertise">Expertise</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#specializations">Specialties</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#certifications">Certifications</a></li>
-    <li><a href="#contact">Contact</a></li>
+  <ul class="nav-links" id="desktopNavLinks">
+    <li><a href="#expertise" data-nav="expertise">Expertise</a></li>
+    <li><a href="#skills" data-nav="skills">Skills</a></li>
+    <li><a href="#specializations" data-nav="specializations">Specialties</a></li>
+    <li><a href="#experience" data-nav="experience">Experience</a></li>
+    <li><a href="#certifications" data-nav="certifications">Certifications</a></li>
+    <li><a href="#contact" data-nav="contact">Contact</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -490,110 +505,195 @@ const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // e.g. 'xK2dP9mN...'
 const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // e.g. 'service_abc123'
 const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // e.g. 'template_xyz789'
 
-emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+const EMAIL_FALLBACK = 'sattarahmedofficial1@gmail.com';
+const emailjsReady =
+  typeof window.emailjs !== 'undefined' &&
+  EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY' &&
+  EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID' &&
+  EMAILJS_TEMPLATE_ID !== 'YOUR_TEMPLATE_ID';
 
-// ── Hamburger ──
+if (emailjsReady) {
+  window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+
+// ── UI controls ──
 const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobileNav');
-hamburger.addEventListener('click', () => {
-  const open = mobileNav.classList.toggle('open');
-  hamburger.classList.toggle('open', open);
-  hamburger.setAttribute('aria-expanded', String(open));
-});
-mobileNav.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    mobileNav.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
+const toTop = document.getElementById('toTop');
+
+if (hamburger && mobileNav) {
+  hamburger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', String(open));
   });
-});
-document.addEventListener('click', e => {
-  if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
-    mobileNav.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-  }
-});
+
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+// ── Active section tracking + back-to-top visibility ──
+const sectionIds = ['expertise', 'skills', 'specializations', 'experience', 'certifications', 'contact'];
+const navLinkMap = new Map(
+  Array.from(document.querySelectorAll('[data-nav]')).map(link => [link.dataset.nav, link])
+);
+
+const setActiveNav = (id) => {
+  navLinkMap.forEach((link, key) => {
+    link.classList.toggle('active', key === id);
+  });
+};
+
+if ('IntersectionObserver' in window) {
+  const secObs = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+    if (visible[0]) {
+      setActiveNav(visible[0].target.id);
+    }
+  }, { threshold: [0.35, 0.6], rootMargin: '-10% 0px -35% 0px' });
+
+  sectionIds.forEach((id) => {
+    const section = document.getElementById(id);
+    if (section) secObs.observe(section);
+  });
+}
+
+if (toTop) {
+  const toggleTopBtn = () => {
+    toTop.classList.toggle('show', window.scrollY > 360);
+  };
+
+  window.addEventListener('scroll', toggleTopBtn, { passive: true });
+  toggleTopBtn();
+
+  toTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
 // ── Scroll reveal ──
-const rvObs = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('on'), i * 55);
-      rvObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.08 });
-document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+if ('IntersectionObserver' in window) {
+  const rvObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('on'), i * 55);
+        rvObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
 
-// ── Skill bars ──
-const barObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.width = e.target.dataset.w + '%';
-      barObs.unobserve(e.target);
-    }
+  document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+  // ── Skill bars ──
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.dataset.w + '%';
+        barObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.bar-fill').forEach(b => barObs.observe(b));
+} else {
+  document.querySelectorAll('.rv').forEach(el => el.classList.add('on'));
+  document.querySelectorAll('.bar-fill').forEach(b => {
+    b.style.width = b.dataset.w + '%';
   });
-}, { threshold: 0.2 });
-document.querySelectorAll('.bar-fill').forEach(b => barObs.observe(b));
+}
 
 // ── Toast helper ──
 function showToast(msg, type) {
   const t = document.getElementById('toast');
+  if (!t) return;
+
   t.textContent = msg;
   t.className = 'toast ' + type + ' show';
-  setTimeout(() => { t.className = 'toast'; }, 4000);
+  setTimeout(() => {
+    t.className = 'toast';
+  }, 4000);
 }
 
 // ── Contact form with EmailJS ──
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const name    = document.getElementById('f_name').value.trim();
-  const email   = document.getElementById('f_email').value.trim();
-  const subject = document.getElementById('f_subject').value.trim();
-  const message = document.getElementById('f_message').value.trim();
-  const btn     = document.getElementById('sendBtn');
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-  if (!name || !email || !subject || !message) {
-    showToast('we messed up.', 'error'); return;
-  }
-  const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRx.test(email)) {
-    showToast('Please enter a valid email address.', 'error'); return;
-  }
+    const name = document.getElementById('f_name')?.value.trim() || '';
+    const email = document.getElementById('f_email')?.value.trim() || '';
+    const subject = document.getElementById('f_subject')?.value.trim() || '';
+    const message = document.getElementById('f_message')?.value.trim() || '';
+    const btn = document.getElementById('sendBtn');
 
-  // If EmailJS keys are not set yet, fall back to mailto
-  if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-    const body = encodeURIComponent(
-      'Name: ' + name + '\nEmail: ' + email + '\n\n' + message
-    );
-    window.location.href = 'mailto:sattarahmedofficial1@gmail.com'
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body=' + body;
-    return;
-  }
+    if (!name || !email || !subject || !message) {
+      showToast('Please complete all fields.', 'error');
+      return;
+    }
 
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRx.test(email)) {
+      showToast('Please enter a valid email address.', 'error');
+      return;
+    }
 
-  try {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      from_name:    name,
-      from_email:   email,
-      subject:      subject,
-      message:      message,
-      to_email:     'sattarahmedofficial1@gmail.com'
-    });
-    showToast('Message sent successfully!', 'success');
-    this.reset();
-    btn.textContent = 'Message Sent';
-    setTimeout(() => { btn.textContent = 'Send Message'; btn.disabled = false; }, 3000);
-  } catch (err) {
-    showToast('Failed to send. Please email directly.', 'error');
-    btn.textContent = 'Send Message';
-    btn.disabled = false;
-  }
-});
+    if (!emailjsReady) {
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+      window.location.href = 'mailto:' + EMAIL_FALLBACK
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + body;
+      return;
+    }
+
+    if (btn) {
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+    }
+
+    try {
+      await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        from_name: name,
+        from_email: email,
+        subject,
+        message,
+        to_email: EMAIL_FALLBACK
+      });
+
+      showToast('Message sent successfully!', 'success');
+      this.reset();
+
+      if (btn) {
+        btn.textContent = 'Message Sent';
+        setTimeout(() => {
+          btn.textContent = 'Send Message';
+          btn.disabled = false;
+        }, 3000);
+      }
+    } catch (err) {
+      showToast('Failed to send. Please email directly.', 'error');
+      if (btn) {
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+      }
+    }
+  });
+}
 </script>
 </body>
 </html>
