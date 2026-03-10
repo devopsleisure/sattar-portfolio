@@ -555,7 +555,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
   const btn     = document.getElementById('sendBtn');
 
   if (!name || !email || !subject || !message) {
-    showToast('Please fill all the box.', 'error'); return;
+    showToast('Please fill all the boxes.', 'error'); return;
   }
   const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRx.test(email)) {
